@@ -1,4 +1,4 @@
-package com.bkdev.translation.ui.welcome;
+package com.bkdev.translation.ui.activities;
 
 import com.bkdev.translation.R;
 import com.bkdev.translation.ui.BaseActivity;

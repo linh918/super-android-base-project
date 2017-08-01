@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mTvHello"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello Linh" />
+
+        <EditText
+            android:id="@+id/mEdtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name" />
+
+        <EditText
+            android:id="@+id/mEdtClassName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="ClassName" />
+
+        <Button
+            android:id="@+id/mBtnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add" />
+        <Button
+            android:id="@+id/mBtnMove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Move" />
+        <Button
+            android:id="@+id/mBtnShowDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show Dialog" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mRcvPersons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

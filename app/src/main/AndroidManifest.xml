@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bkdev.translation">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,15 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.welcome.LoginActivity_"
+            android:name=".ui.activities.LoginActivity_"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden">
+            android:windowSoftInputMode="adjustNothing|stateHidden" />
+        <activity
+            android:name=".ui.activities.Main2Activity_"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.activities.BottomNavActivity_"
+            android:label="@string/title_activity_bottom_nav"></activity>
+        <activity
+            android:name=".ui.webview.WebViewActivity_"
+            android:label="@string/title_activity_webview"></activity>
     </application>
 
 </manifest>
