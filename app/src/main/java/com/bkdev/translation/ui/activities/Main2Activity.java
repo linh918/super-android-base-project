@@ -2,8 +2,19 @@ package com.bkdev.translation.ui.activities;
 
 import android.content.Intent;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
+import android.content.pm.Signature;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +28,14 @@ import com.bkdev.translation.model.person.Person;
 import com.bkdev.translation.recyclers.RecyclerTouchListener;
 import com.bkdev.translation.ui.BaseActivity;
 import com.bkdev.translation.ui.dialogs.TestDialog;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
@@ -24,6 +43,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -52,9 +73,19 @@ public class Main2Activity extends BaseActivity {
     private PersonManager mPersonManager;
     private PersonRecyclerAdapter mPersonRecyclerAdapter;
     private List<Person> mPersons;
+    private ShareDialog shareDialog;
+    private Target loadtarget;
+    private  Bitmap bitmap;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        facebookSDKInitialize();
+    }
 
     @Override
     protected void init() {
+        loadBitmap("https://scontent.cdninstagram.com/t51.2885-15/s150x150/e35/20478936_1884259261836234_7612737564025290752_n.jpg");
+        shareDialog = new ShareDialog(this);
         Realm.init(this);
         mPersonManager = new PersonManager();
         mPersons = mPersonManager.getPersons();
@@ -73,6 +104,14 @@ public class Main2Activity extends BaseActivity {
 
             }
         }));
+
+
+    }
+
+    protected void facebookSDKInitialize() {
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
 
     }
 
@@ -107,8 +146,43 @@ public class Main2Activity extends BaseActivity {
 
     @Click(R.id.mBtnShowDialog)
     void showDialog(){
-        TestDialog testDialog= new TestDialog();
-        testDialog.show(this.getSupportFragmentManager(),"");
+//        TestDialog testDialog= new TestDialog();
+//        testDialog.show(this.getSupportFragmentManager(),"");
+share();
+    }
+
+    private void share(){
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT,"aaaaaaaaaaaaaaaaa");
+        startActivity(Intent.createChooser(intent, "Share with"));
+    }
+
+    private void shareToFb(){
+        if (ShareDialog.canShow(ShareLinkContent.class)) {
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentDescription("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+                    .setContentUrl(Uri.parse("https://scontent.cdninstagram.com/t51.2885-15/s150x150/e35/20478936_1884259261836234_7612737564025290752_n.jpg"))
+                    .build();
+
+            shareDialog.show(linkContent);  // Show facebook ShareDialog
+        }
+    }
+
+    private  void shareImageToFB(){
+            if(bitmap!=null){
+                SharePhoto photo = new SharePhoto.Builder()
+                        .setCaption("aaaaaaaaaaaaaaaaaaa")
+                        .setUserGenerated(true)
+                        .setBitmap(bitmap)
+                        .build();
+                SharePhotoContent content = new SharePhotoContent.Builder()
+                        .addPhoto(photo)
+                        .build();
+                shareDialog.show(content);  // Show facebook ShareDialog
+            }
+
+
     }
 
     @Background
@@ -124,6 +198,38 @@ public class Main2Activity extends BaseActivity {
             updateUI(message);
         }
     }
+
+
+
+
+        public void loadBitmap(String url) {
+            Log.i("TAG7","load ");
+            if (loadtarget == null) loadtarget = new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    handleLoadedBitmap(bitmap);
+                }
+
+                @Override
+                public void onBitmapFailed(Drawable errorDrawable) {
+
+                }
+
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                }
+            };
+
+            Picasso.with(this).load(url).into(loadtarget);
+
+        }
+
+        public void handleLoadedBitmap(Bitmap b) {
+            Log.i("TAG7","load OK");
+            bitmap=b;
+        }
+
 
     @UiThread
     void updateUI(String message) {
