@@ -31,18 +31,25 @@
             android:label="@string/title_activity_main2"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-
-
-
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.activities.BottomNavActivity_"
             android:label="@string/title_activity_bottom_nav"></activity>
+        <activity
+            android:name=".instagram.InstagramSignInActivity_"
+            android:label="@string/title_activity_bottom_nav"></activity>
+
+        <activity
+            android:name=".instagram.MainActivity_"
+            android:label="@string/title_activity_bottom_nav">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".ui.webview.WebViewActivity_"
             android:label="@string/title_activity_webview"></activity>
