@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bkdev.translation">
 
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,33 +16,52 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider1799457530344204"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
+            android:authorities="com.facebook.app.FacebookContentProvider1799457530344204"
+            android:exported="true" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <activity
             android:name=".ui.activities.LoginActivity_"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustNothing|stateHidden">
+
+        </activity>
         <activity
             android:name=".ui.activities.Main2Activity_"
-            android:label="@string/title_activity_main2"
             android:exported="true"
+            android:label="@string/title_activity_main2"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
         <activity
             android:name=".ui.activities.BottomNavActivity_"
-            android:label="@string/title_activity_bottom_nav"></activity>
+            android:label="@string/title_activity_bottom_nav">
+
+        </activity>
+
         <activity
             android:name=".instagram.InstagramSignInActivity_"
-            android:label="@string/title_activity_bottom_nav"></activity>
+            android:label="@string/title_activity_bottom_nav">
+
+        </activity>
+        <activity
+            android:name=".ui.activities.RatingBarActivity_"
+            android:label="@string/title_activity_bottom_nav">
+
+        </activity>
 
         <activity
             android:name=".instagram.MainActivity_"
+            android:label="@string/title_activity_bottom_nav">
+
+        </activity>
+        <activity
+            android:name=".ui.activities.PlayVideoActivity_"
             android:label="@string/title_activity_bottom_nav">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,25 +70,32 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.activities.MainActivity">
+
+        </activity>
+
         <activity
             android:name=".ui.webview.WebViewActivity_"
-            android:label="@string/title_activity_webview"></activity>
+            android:label="@string/title_activity_webview">
+
+        </activity>
         <activity
-            android:exported="true"
             android:name=".ui.activities.GridViewExampleActivity_"
+            android:exported="true"
             android:label="@string/title_activity_webview">
             <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
 
-            <data
-                android:host="yoursitedomainaaaa.com"
-                android:scheme="http" />
-            <data
-                android:host="yoursitedomainaaaa.com"
-                android:scheme="http" />
-        </intent-filter>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="yoursitedomainaaaa.com"
+                    android:scheme="http" />
+                <data
+                    android:host="yoursitedomainaaaa.com"
+                    android:scheme="http" />
+            </intent-filter>
 
         </activity>
     </application>

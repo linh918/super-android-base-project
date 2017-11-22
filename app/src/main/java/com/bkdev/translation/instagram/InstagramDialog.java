@@ -4,8 +4,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -17,36 +15,37 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import com.bkdev.translation.util.ScreenUtil;
 
 /**
  * Created by ashok.kumar on 04/02/16.
  */
 public class InstagramDialog extends Dialog {
 
-    static final float[] DIMENSIONS_LANDSCAPE = { 460, 260 };
-    static final float[] DIMENSIONS_PORTRAIT = { 280, 420 };
+
     static final FrameLayout.LayoutParams FILL = new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.FILL_PARENT,
             ViewGroup.LayoutParams.FILL_PARENT);
     static final int MARGIN = 4;
     static final int PADDING = 2;
+    private  Context mContext;
 
     private String mUrl;
     private OAuthDialogListener mListener;
     private ProgressDialog mSpinner;
     private WebView mWebView;
     private LinearLayout mContent;
-    private TextView mTitle;
 
     private static final String TAG = "Instagram-WebView";
 
     public InstagramDialog(Context context, String url,
                            OAuthDialogListener listener) {
-        super(context);
+        super(context,android.R.style.Theme_Holo_NoActionBar_Fullscreen);
 
         mUrl = url;
         mListener = listener;
+        mContext=context;
     }
 
     @Override
@@ -58,32 +57,23 @@ public class InstagramDialog extends Dialog {
         mSpinner.setMessage("Loading...");
         mContent = new LinearLayout(getContext());
         mContent.setOrientation(LinearLayout.VERTICAL);
-        setUpTitle();
         setUpWebView();
-
+        final float[] DIMENSIONS_LANDSCAPE = {ScreenUtil.getHeightScreen(mContext)-10, ScreenUtil.getWidthScreen(mContext)-10 };
+        final float[] DIMENSIONS_PORTRAIT = { ScreenUtil.getWidthScreen(mContext)-10, ScreenUtil.getHeightScreen(mContext)-10 };
         Display display = getWindow().getWindowManager().getDefaultDisplay();
         final float scale = getContext().getResources().getDisplayMetrics().density;
         float[] dimensions = (display.getWidth() < display.getHeight()) ? DIMENSIONS_PORTRAIT
                 : DIMENSIONS_LANDSCAPE;
 
         addContentView(mContent, new FrameLayout.LayoutParams(
-                (int) (dimensions[0] * scale + 0.5f), (int) (dimensions[1]
-                * scale + 0.5f)));
+                (int) (dimensions[0] ), (int) (dimensions[1]
+                )));
         CookieSyncManager.createInstance(getContext());
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.removeAllCookie();
     }
 
-    private void setUpTitle() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mTitle = new TextView(getContext());
-        mTitle.setText("Instagram");
-        mTitle.setTextColor(Color.WHITE);
-        mTitle.setTypeface(Typeface.DEFAULT_BOLD);
-        mTitle.setBackgroundColor(Color.BLACK);
-        mTitle.setPadding(MARGIN + PADDING, MARGIN, MARGIN, MARGIN);
-        mContent.addView(mTitle);
-    }
+
 
     private void setUpWebView() {
         mWebView = new WebView(getContext());
@@ -102,7 +92,7 @@ public class InstagramDialog extends Dialog {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Log.d(TAG, "Redirecting URL " + url);
 
-            if (url.startsWith(InstagramApp.mCallbackUrl)) {
+            if (url.startsWith(InstagramHelper.mCallbackUrl)) {
                 String urls[] = url.split("=");
                 mListener.onComplete(urls[1]);
                 InstagramDialog.this.dismiss();
@@ -133,9 +123,7 @@ public class InstagramDialog extends Dialog {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             String title = mWebView.getTitle();
-            if (title != null && title.length() > 0) {
-                mTitle.setText(title);
-            }
+
             Log.d(TAG, "onPageFinished URL: " + url);
             mSpinner.dismiss();
         }

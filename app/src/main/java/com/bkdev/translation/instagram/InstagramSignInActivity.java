@@ -1,8 +1,6 @@
 package com.bkdev.translation.instagram;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +11,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.bkdev.translation.R;
-import com.bkdev.translation.model.newsfeed.Instagram;
 import com.bkdev.translation.ui.BaseActivity;
 
 import org.androidannotations.annotations.EActivity;
@@ -70,7 +67,7 @@ public class InstagramSignInActivity extends BaseActivity {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Log.d(TAG, "Redirecting URL " + url);
 
-            if (url.startsWith(InstagramApp.mCallbackUrl)) {
+            if (url.startsWith(InstagramHelper.mCallbackUrl)) {
                 String urls[] = url.split("=");
                 Bundle bundle = new Bundle();
 

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.CookieManager;
@@ -63,8 +62,8 @@ public class CustomDialog extends Dialog {
                 : DIMENSIONS_LANDSCAPE;
 
         addContentView(mContent, new FrameLayout.LayoutParams(
-                (int) (dimensions[0] * scale + 0.5f), (int) (dimensions[1]
-                * scale + 0.5f)));
+                (int) (dimensions[0] ), (int) (dimensions[1]
+                )));
 
 
 
@@ -90,6 +89,19 @@ public class CustomDialog extends Dialog {
 
 
         @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            Log.d(TAG, "Redirecting URL " + url);
+
+            if (url.startsWith(InstagramHelper.mCallbackUrl)) {
+                String urls[] = url.split("=");
+                mListener.onComplete(urls[1]);
+                CustomDialog.this.dismiss();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
         public void onReceivedError(WebView view, int errorCode,
                                     String description, String failingUrl) {
             Log.d(TAG, "Page error: " + description);
@@ -111,6 +123,7 @@ public class CustomDialog extends Dialog {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             String title = mWebView.getTitle();
+
             Log.d(TAG, "onPageFinished URL: " + url);
             mSpinner.dismiss();
         }

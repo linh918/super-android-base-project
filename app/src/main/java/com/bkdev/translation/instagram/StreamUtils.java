@@ -9,7 +9,7 @@ import java.io.OutputStream;
 /**
  * Created by ashok.kumar on 04/02/16.
  */
-public class Utils {
+public class StreamUtils {
     public static void CopyStream(InputStream is, OutputStream os) {
         final int buffer_size = 1024;
         try {

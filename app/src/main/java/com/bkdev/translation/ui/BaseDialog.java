@@ -17,7 +17,7 @@ import org.androidannotations.annotations.EFragment;
 /**
  * Base Dialog
  *
- * @author Ync.
+ * @author linh918.
  */
 @EFragment
 public abstract class BaseDialog extends DialogFragment {
